@@ -1,19 +1,12 @@
-import base64
-import cv2
-from fastapi import FastAPI, Response, Header, status, File, UploadFile, Form
-from fastapi.responses import JSONResponse, ORJSONResponse
+from fastapi import FastAPI, Header
 from image_registration import MatchTemplate, CudaMatchTemplate, SIFT, RootSIFT, SURF, CUDA_SURF, findit, ORB, CUDA_ORB
-from baseImage import IMAGE
+
+from utils.request_item_model import base_item, best_result_response
+from utils import ParseImage, ResultModels
 from pydantic import BaseModel
-import numpy as np
 
-from typing import Optional, Union, List
-import pickle
+from typing import Union, Dict
 import time
-
-from utils.request_item_model import base_item
-from utils import ParseImage
-
 app = FastAPI()
 
 
@@ -24,27 +17,17 @@ def read_root():
 
 tpl = CudaMatchTemplate()
 
+# TODO: 错误处理(图片解码错误,find_best错误)
 
-@app.post("/tpl/best/", response_class=ORJSONResponse)
-def tpl_best_result(item: base_item, image_format: str = Header(None, examples={
-    'pickle-ndarray': {
-        'summary': 'pickle-ndarray',
-        "description": "python pickle序列化后的numpy数组",
-    }
-})):
-    result = {}
-    if image_format == 'pickle-ndarray':
-        im_source = ParseImage.pickle_np(item.im_source)
-        im_search = ParseImage.pickle_np(item.im_search)
-    else:
-        im_source = ParseImage.b64decode_np(item.im_source)
-        im_search = ParseImage.b64decode_np(item.im_search)
 
-    _result = tpl.find_best_result(im_source=im_source, im_search=im_search, threshold=item.threshold,
-                                   rgb=item.rgb)
-    if _result:
-        result.update(_result)
-    return result
+@app.post("/tpl/best/", response_model=best_result_response)
+def tpl_best_result(item: base_item):
+    im_source = ParseImage.b64decode_np(item.im_source)
+    im_search = ParseImage.b64decode_np(item.im_search)
+    result = tpl.find_best_result(im_source=im_source, im_search=im_search, threshold=item.threshold,
+                                  rgb=item.rgb)
+    if result:
+        return ResultModels.find_best(result)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@ import pickle
 import cv2
 import numpy as np
 
+from baseImage import Rect
+
 
 class ParseImage(object):
     @staticmethod
@@ -36,3 +38,20 @@ class ParseImage(object):
         nparray = np.frombuffer(str_decode, np.uint8)
         img = cv2.imdecode(nparray, cv2.IMREAD_COLOR)
         return img
+
+
+class ResultModels(object):
+    @staticmethod
+    def find_best(res: dict) -> dict:
+        rect: Rect = res.get('rect')
+        confidence = res.get('confidence')
+
+        return {
+            'rect': {
+                'x': rect.x,
+                'y': rect.y,
+                'width': rect.width,
+                'height': rect.height,
+            },
+            'confidence': confidence,
+        }
