@@ -1,5 +1,6 @@
 import base64
 import pickle
+from typing import Union, Optional
 
 import cv2
 import numpy as np
@@ -54,4 +55,27 @@ class ResultModels(object):
                 'height': rect.height,
             },
             'confidence': confidence,
+        }
+
+
+class ResultErrorModels(object):
+    @staticmethod
+    def ImageError():
+        return {
+          "error_code": 100,
+          "error_msg": "图片错误，请检查后重新尝试"
+        }
+
+    @staticmethod
+    def RecognizeError():
+        return {
+          "error_code": 101,
+          "error_msg": "识别错误，请再次请求"
+        }
+
+    @staticmethod
+    def MissingParameters(params: Union[str, list]):
+        return {
+          "error_code": 102,
+          "error_msg": f"请求参数缺失: {params}"
         }
