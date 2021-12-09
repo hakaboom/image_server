@@ -20,3 +20,8 @@ class _Rect(BaseModel):
 class best_result_response(BaseModel):
     rect: _Rect
     confidence: float = Field(..., ge=0, le=1)
+
+
+class paddleOCR_item(BaseModel):
+    image: str
+    lang: Optional[str] = 'en'  # 默认识别语言

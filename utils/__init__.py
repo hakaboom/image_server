@@ -1,6 +1,6 @@
 import base64
 import pickle
-from typing import Union, Optional
+from typing import Union, Optional, List
 
 import cv2
 import numpy as np
@@ -55,6 +55,13 @@ class ResultModels(object):
                 'height': rect.height,
             },
             'confidence': confidence,
+        }
+
+    @staticmethod
+    def ocr_general_basic(res: list):
+        return {
+            'text': res[0][0],
+            'confidence': res[0][1]
         }
 
 
