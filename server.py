@@ -5,7 +5,7 @@ from image_registration.exceptions import BaseError as CvError
 from baseImage.exceptions import BaseError as ImageError
 import binascii
 
-from utils.request_item_model import base_item, best_result_response, paddleOCR_item
+from utils.request_item_model import base_item, best_result_response, paddleOCR_item, general_basic_response
 from utils import ParseImage, ResultModels, ResultErrorModels
 from pydantic import BaseModel
 
@@ -39,11 +39,11 @@ def tpl_best_result(item: base_item):
         return ResultModels.find_best(result)
 
 
-@app.post("/ocr/paddle/general_basic")
+@app.post("/ocr/paddle/general_basic/", response_model=general_basic_response)
 def paddleocr_general_basic(item: paddleOCR_item):
     """基础识别, 不包含检测位置, 只识别. det=False, res=True, cls=False"""
     try:
-        img = ParseImage.b64decode_np(item.image)
+        img = ParseImage.b64decode_np(item.img)
         result = ocr.ocr(image=img, det=False, lang=item.lang)
     except (binascii.Error, ImageError):
         raise HTTPException(status_code=200, detail=ResultErrorModels.ImageError())

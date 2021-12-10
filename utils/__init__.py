@@ -61,7 +61,7 @@ class ResultModels(object):
     def ocr_general_basic(res: list):
         return {
             'text': res[0][0],
-            'confidence': res[0][1]
+            'confidence': res[0][1],
         }
 
 

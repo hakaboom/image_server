@@ -23,5 +23,10 @@ class best_result_response(BaseModel):
 
 
 class paddleOCR_item(BaseModel):
-    image: str
-    lang: Optional[str] = 'en'  # 默认识别语言
+    img: Any
+    lang: Optional[str] = 'ch'  # 默认识别语言
+
+
+class general_basic_response(BaseModel):
+    text: str
+    confidence: float = Field(..., ge=0, le=1)
