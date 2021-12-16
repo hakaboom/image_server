@@ -2,6 +2,12 @@
 
 - 由于paddle安装时会影响opencv的版本,导致部分api无法访问,暂时没想到什么好办法,所以该项目手动安装模块
 
+## 确认环境
+- 确认python的版本是否满足要求（3.6/3.7/3.8/3.9)
+```bash
+python --version
+```
+
 ## 1. 安装Paddle
 根据自己的环境可以安装cpu或gpu版本。详细的安装步骤可以去[paddle官网](https://www.paddlepaddle.org.cn/install/quick) 查看
 ```bash
