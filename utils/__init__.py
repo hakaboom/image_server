@@ -58,6 +58,24 @@ class ResultModels(object):
         }
 
     @staticmethod
+    def find_all(res: dict) -> dict:
+        r = []
+        for v in res:
+            # v: dict(rect=xxx, confidence=xxx)
+            rect: Rect = v.get('rect')
+            confidence = v.get('confidence')
+            r.append({
+                'rect': {
+                    'x': rect.x,
+                    'y': rect.y,
+                    'width': rect.width,
+                    'height': rect.height,
+                },
+                'confidence': confidence,
+            })
+        return r
+
+    @staticmethod
     def ocr_general_basic(res: list):
         return {
             'text': res[0][0],
