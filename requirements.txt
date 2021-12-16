@@ -1,0 +1,5 @@
+fastapi>=0.70.1
+paddlepaddle==2.2.1
+paddleocr>=2.0.1
+py-image-registration>=1.0.16
+uvicorn[standard]

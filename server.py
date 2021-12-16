@@ -54,4 +54,4 @@ def paddleocr_general_basic(item: paddleOCR_item):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='127.0.0.1', port=8081)
+    uvicorn.run(app, host='127.0.0.1', port=7788)
